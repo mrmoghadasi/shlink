@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+
+  shlink:
+    image: shlinkio/shlink:stable
+    container_name: shlink
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=
+      - DB_PASSWORD=
+      - DB_NAME=shlink
+      - DB_DRIVER=mysql
+      - DEFAULT_DOMAIN=
+      - IS_HTTPS_ENABLED=true
+    ports:
+      - 1592:8080
+    restart: unless-stopped
+
+  shlink-web-client:
+    image: shlinkio/shlink-web-client
+    container_name: shlink-web-client
+    ports:
+      - 8079:80
+    restart: unless-stopped      
+    
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: 
+      MYSQL_USER: 
+      MYSQL_PASSWORD: 
+    ports:
+      - 3306
+
+networks:
+  default:
+    name: int_net
+    external: true      
